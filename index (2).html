@@ -793,6 +793,48 @@
   <h2>Mes projets</h2>
   <div class="projects-grid">
 
+    <!-- FEATURED PROJECT -->
+    <div class="project-card" style="border-color:rgba(0,255,136,0.35);grid-column:1/-1;background:linear-gradient(135deg,#0d1117,#0f1f14);">
+      <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1.2rem;">
+        <span style="background:rgba(0,255,136,0.12);border:1px solid rgba(0,255,136,0.35);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--accent);padding:0.25rem 0.75rem;">👑 Chef de Projet</span>
+        <span style="background:rgba(0,170,255,0.1);border:1px solid rgba(0,170,255,0.3);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--accent2);padding:0.25rem 0.75rem;">🎓 Projet Scolaire · ESP Dakar</span>
+      </div>
+      <div class="project-header">
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+          <div class="project-icon" style="font-size:2rem">🇸🇳</div>
+          <div>
+            <div class="project-name" style="font-size:1.4rem;letter-spacing:-0.02em">XEUYOU NDAW YI</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:0.2rem">Numérisation de la recherche d'emploi au Sénégal</div>
+          </div>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/mansour-niang" title="GitHub">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55v-1.93c-3.19.69-3.86-1.54-3.86-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.27-5.23-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.15 1.17a10.96 10.96 0 012.87-.39c.97 0 1.95.13 2.87.39 2.19-1.48 3.15-1.17 3.15-1.17.62 1.57.23 2.73.11 3.02.74.8 1.18 1.82 1.18 3.07 0 4.4-2.68 5.37-5.24 5.65.41.35.78 1.05.78 2.12v3.14c0 .3.2.66.79.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="project-desc" style="font-size:0.85rem;margin-top:0.5rem;max-width:700px;">
+        Plateforme web de mise en relation entre jeunes diplômés et recruteurs au Sénégal.
+        Dépôt de CV en ligne, offres d'emploi géolocalisées, messagerie intégrée et tableau de bord employeur.
+        Projet mené en équipe à l'ESP Dakar sous ma direction en tant que chef de projet.
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.25rem;">
+        <span class="tag">HTML/CSS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">PHP</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">UML</span>
+        <span class="tag">Merise</span>
+      </div>
+      <div class="project-footer">
+        <div>
+          <span class="lang-dot" style="background:#4F5D95"></span>
+          <span class="lang-label">PHP · Projet d'équipe ESP</span>
+        </div>
+        <span class="stars" style="color:var(--accent)">⭐ Projet phare</span>
+      </div>
+    </div>
+
     <div class="project-card">
       <div class="project-header">
         <div class="project-icon">📁</div>
@@ -920,11 +962,11 @@
           </div>
           <span class="social-link-arrow">→</span>
         </a>
-        <a href="mailto:mouhamadou.niang@esp.sn" class="social-link">
+        <a href="mailto:manzoniang@gmail.com" class="social-link">
           <span class="social-link-icon">📧</span>
           <div class="social-link-info">
             <div class="social-link-name">Email</div>
-            <div class="social-link-handle">mouhamadou.niang@esp.sn</div>
+            <div class="social-link-handle">manzoniang@gmail.com</div>
           </div>
           <span class="social-link-arrow">→</span>
         </a>
@@ -960,7 +1002,7 @@
   <div class="footer-text">ESP Dakar · L2 SI & Télécom · HCIA-Datacom</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Skill bar animation on scroll
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -991,13 +1033,4 @@
       if (entry.isIntersecting) {
         setTimeout(() => {
           entry.target.style.opacity = '1';
-          entry.target.style.transform = entry.target.classList.contains('social-link')
-            ? 'translateX(0)' : 'translateY(0)';
-        }, i * 80);
-        cardObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  cards.forEach(card => {
-    card.sty
+          entry.target.style.tran
