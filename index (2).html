@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mouhamadou Mansour Niang — Développeur Web</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #080c10;
+      --surface: #0d1117;
+      --surface2: #161b22;
+      --border: #21262d;
+      --accent: #00ff88;
+      --accent2: #0af;
+      --text: #e6edf3;
+      --muted: #7d8590;
+      --danger: #ff4466;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.4;
+    }
+
+    /* GRID BG */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 3rem;
+      background: rgba(8,12,16,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+    }
+
+    .nav-logo span { color: var(--muted); }
+
+    nav ul {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    nav ul a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover { color: var(--accent); }
+
+    /* HERO */
+    #hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 3rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-inner {
+      max-width: 720px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.3rem 0.8rem;
+      border-radius: 2px;
+      margin-bottom: 2rem;
+      letter-spacing: 0.1em;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-tag::before { content: '> '; opacity: 0.5; }
+
+    h1 {
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    h1 .accent { color: var(--accent); }
+    h1 .dim { color: var(--muted); font-weight: 400; }
+
+    .hero-desc {
+      margin-top: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 520px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .hero-desc .highlight { color: var(--accent2); }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      background: #00cc6a;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,255,136,0.25);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* TERMINAL BLOCK */
+    .terminal {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 420px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+      animation: fadeLeft 0.8s 0.4s ease both;
+    }
+
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #27c93f; }
+
+    .terminal-title {
+      flex: 1;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .terminal-body {
+      padding: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 2;
+    }
+
+    .t-line { display: flex; gap: 0.5rem; }
+    .t-prompt { color: var(--accent); }
+    .t-cmd { color: var(--text); }
+    .t-out { color: var(--muted); padding-left: 1rem; }
+    .t-out .val { color: var(--accent2); }
+    .t-cursor {
+      display: inline-block;
+      width: 8px; height: 1.1em;
+      background: var(--accent);
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+
+    /* SECTIONS */
+    section {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 3rem;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-label::before { content: '// '; opacity: 0.5; }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 3rem;
+    }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+
+    .skill-card:hover {
+      border-color: rgba(0,255,136,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+    }
+
+    .skill-card:hover::before { transform: scaleX(1); }
+
+    .skill-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .skill-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.75rem;
+    }
+
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+      background: var(--surface2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    /* SKILL BAR */
+    .skill-bar {
+      height: 3px;
+      background: var(--border);
+      border-radius: 3px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .project-card:hover {
+      border-color: rgba(0,170,255,0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    .project-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .project-icon {
+      font-size: 1.4rem;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .project-links a {
+      color: var(--muted);
+      font-size: 1.1rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .project-links a:hover { color: var(--accent); }
+
+    .project-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-desc {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .project-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .lang-dot {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-right: 0.4rem;
+    }
+
+    .lang-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .stars {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    /* CONTACT */
+    #contact {
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .contact-info p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .social-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .social-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateX(6px);
+    }
+
+    .social-link-icon { font-size: 1.2rem; }
+
+    .social-link-info { flex: 1; }
+    .social-link-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .social-link-handle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .social-link-arrow { color: var(--muted); font-size: 1.1rem; }
+
+    /* FORM */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    input, textarea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      transition: border-color 0.2s;
+      outline: none;
+      resize: vertical;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+    }
+
+    textarea { min-height: 120px; }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .footer-text span { color: var(--accent); }
+
+    /* DIVIDER */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 0 auto;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeLeft {
+      from { opacity: 0; transform: translate(24px, -50%); }
+      to   { opacity: 1; transform: translate(0, -50%); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,255,136,0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(0,255,136,0); }
+    }
+
+    .pulse { animation: pulse 2s infinite; }
+
+    /* STATUS */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0,255,136,0.08);
+      border: 1px solid rgba(0,255,136,0.25);
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .terminal { display: none; }
+      nav { padding: 1rem 1.5rem; }
+      nav ul { gap: 1.5rem; }
+      #hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+
+    @media (max-width: 600px) {
+      nav ul { display: none; }
+      .projects-grid, .skills-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">mmn<span>/</span>portfolio</div>
+  <ul>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      Disponible pour des opportunités
+    </div>
+    <div class="hero-tag">Étudiant L2 SI & Télécom — ESP Dakar · Certifié HCIA-Datacom</div>
+    <h1>
+      Bonjour,<br/>
+      je suis <span class="accent">Mansour</span><span class="dim">.</span>
+    </h1>
+    <p class="hero-desc">
+      Étudiant en <span class="highlight">Systèmes d'Information & Télécom</span> à l'<span class="highlight">École Polytechnique de Dakar</span>,
+      développeur web passionné et certifié <span class="highlight">HCIA-Datacom (Huawei)</span>.
+      Je construis des apps modernes et maîtrise les architectures réseau.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">Voir mes projets →</a>
+      <a href="#contact" class="btn btn-ghost">Me contacter</a>
+    </div>
+  </div>
+
+  <div class="terminal">
+    <div class="terminal-bar">
+      <span class="dot dot-r"></span>
+      <span class="dot dot-y"></span>
+      <span class="dot dot-g"></span>
+      <span class="terminal-title">~/portfolio — zsh</span>
+    </div>
+    <div class="terminal-body">
+      <div class="t-line"><span class="t-prompt">~$</span><span class="t-cmd">whoami</span></div>
+      <div class="t-out"><span class="val">mansour_niang</span></div>
+      <div class="t-line"><span class="t-prompt">~$</span><span class="t-cmd">cat info.json</span></div>
+      <div class="t-out">{</div>
+      <div class="t-out">&nbsp;&nbsp;"nom": <span class="val">"Mouhamadou Mansour Niang"</span>,</div>
+      <div class="t-out">&nbsp;&nbsp;"école": <span class="val">"ESP Dakar"</span>,</div>
+      <div class="t-out">&nbsp;&nbsp;"niveau": <span class="val">"Licence 2"</span>,</div>
+      <div class="t-out">&nbsp;&nbsp;"filières": [<span class="val">"SI"</span>, <span class="val">"Télécom"</span>],</div>
+      <div class="t-out">&nbsp;&nbsp;"certif": <span class="val">"HCIA-Datacom v1.0"</span>,</div>
+      <div class="t-out">&nbsp;&nbsp;"dispo": <span class="val">true</span></div>
+      <div class="t-out">}</div>
+      <div class="t-line"><span class="t-prompt">~$</span><span class="t-cmd"><span class="t-cursor"></span></span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">compétences</div>
+  <h2>Stack technique</h2>
+
+  <!-- CERTIFICATION BADGE -->
+  <div style="display:flex;align-items:center;gap:1rem;background:var(--surface);border:1px solid rgba(255,0,102,0.3);border-radius:8px;padding:1rem 1.5rem;margin-bottom:2.5rem;max-width:520px;">
+    <div style="font-size:2rem">🏅</div>
+    <div>
+      <div style="font-weight:700;font-size:1rem;margin-bottom:0.2rem">Certifié HCIA-Datacom V1.0</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted)">Huawei Talent Online · ICT Academy — Réseaux & Datacom</div>
+    </div>
+    <div style="margin-left:auto;background:rgba(255,0,102,0.1);border:1px solid rgba(255,0,102,0.4);border-radius:4px;padding:0.3rem 0.7rem;font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#ff4488;white-space:nowrap;">✓ Vérifié</div>
+  </div>
+
+  <div class="skills-grid">
+
+    <div class="skill-card">
+      <div class="skill-icon">🌐</div>
+      <div class="skill-name">Frontend</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width:80%"></div></div>
+      <div class="skill-tags">
+        <span class="tag">HTML5</span>
+        <span class="tag">CSS3</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">React</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">⚙️</div>
+      <div class="skill-name">Backend</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width:65%"></div></div>
+      <div class="skill-tags">
+        <span class="tag">Node.js</span>
+        <span class="tag">PHP</span>
+        <span class="tag">Python</span>
+        <span class="tag">SQL</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">🔌</div>
+      <div class="skill-name">Réseaux & Télécom</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width:70%"></div></div>
+      <div class="skill-tags">
+        <span class="tag">TCP/IP</span>
+        <span class="tag">Cisco</span>
+        <span class="tag">VLAN</span>
+        <span class="tag">Wireshark</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">🗄️</div>
+      <div class="skill-name">Bases de données</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width:72%"></div></div>
+      <div class="skill-tags">
+        <span class="tag">MySQL</span>
+        <span class="tag">PostgreSQL</span>
+        <span class="tag">MongoDB</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">🛠️</div>
+      <div class="skill-name">Outils & DevOps</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width:60%"></div></div>
+      <div class="skill-tags">
+        <span class="tag">Git</span>
+        <span class="tag">GitHub</span>
+        <span class="tag">Linux</span>
+        <span class="tag">Docker</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">💻</div>
+      <div class="skill-name">Systèmes d'Information</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width:68%"></div></div>
+      <div class="skill-tags">
+        <span class="tag">UML</span>
+        <span class="tag">Merise</span>
+        <span class="tag">MVC</span>
+        <span class="tag">REST API</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">github</div>
+  <h2>Mes projets</h2>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-icon">📁</div>
+        <div class="project-links">
+          <a href="https://github.com/mansour-niang" title="GitHub">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55v-1.93c-3.19.69-3.86-1.54-3.86-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.27-5.23-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.15 1.17a10.96 10.96 0 012.87-.39c.97 0 1.95.13 2.87.39 2.19-1.48 3.15-1.17 3.15-1.17.62 1.57.23 2.73.11 3.02.74.8 1.18 1.82 1.18 3.07 0 4.4-2.68 5.37-5.24 5.65.41.35.78 1.05.78 2.12v3.14c0 .3.2.66.79.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
+          </a>
+          <a href="#" title="Voir le projet">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="project-name">Application de Gestion</div>
+      <div class="project-desc">
+        Application web full-stack avec authentification, tableau de bord et gestion CRUD complète. Interface responsive et API REST.
+      </div>
+      <div class="skill-tags" style="margin-top:1rem">
+        <span class="tag">React</span>
+        <span class="tag">Node.js</span>
+        <span class="tag">MySQL</span>
+      </div>
+      <div class="project-footer">
+        <div>
+          <span class="lang-dot" style="background:#f7df1e"></span>
+          <span class="lang-label">JavaScript</span>
+        </div>
+        <span class="stars">★ 12</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-icon">🔌</div>
+        <div class="project-links">
+          <a href="https://github.com/mansour-niang" title="GitHub">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55v-1.93c-3.19.69-3.86-1.54-3.86-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.27-5.23-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.15 1.17a10.96 10.96 0 012.87-.39c.97 0 1.95.13 2.87.39 2.19-1.48 3.15-1.17 3.15-1.17.62 1.57.23 2.73.11 3.02.74.8 1.18 1.82 1.18 3.07 0 4.4-2.68 5.37-5.24 5.65.41.35.78 1.05.78 2.12v3.14c0 .3.2.66.79.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="project-name">Simulateur Réseau</div>
+      <div class="project-desc">
+        Simulation de topologies réseau en Python. Modélisation des protocoles de routage et analyse de paquets avec visualisation.
+      </div>
+      <div class="skill-tags" style="margin-top:1rem">
+        <span class="tag">Python</span>
+        <span class="tag">TCP/IP</span>
+        <span class="tag">Cisco</span>
+      </div>
+      <div class="project-footer">
+        <div>
+          <span class="lang-dot" style="background:#3572A5"></span>
+          <span class="lang-label">Python</span>
+        </div>
+        <span class="stars">★ 8</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-icon">🌍</div>
+        <div class="project-links">
+          <a href="https://github.com/mansour-niang" title="GitHub">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55v-1.93c-3.19.69-3.86-1.54-3.86-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.27-5.23-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.15 1.17a10.96 10.96 0 012.87-.39c.97 0 1.95.13 2.87.39 2.19-1.48 3.15-1.17 3.15-1.17.62 1.57.23 2.73.11 3.02.74.8 1.18 1.82 1.18 3.07 0 4.4-2.68 5.37-5.24 5.65.41.35.78 1.05.78 2.12v3.14c0 .3.2.66.79.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
+          </a>
+          <a href="#" title="Demo live">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="project-name">Site Vitrine E-commerce</div>
+      <div class="project-desc">
+        Boutique en ligne avec panier, filtres produits et interface admin. Intégration d'une API de paiement et système de commandes.
+      </div>
+      <div class="skill-tags" style="margin-top:1rem">
+        <span class="tag">PHP</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">CSS3</span>
+      </div>
+      <div class="project-footer">
+        <div>
+          <span class="lang-dot" style="background:#4F5D95"></span>
+          <span class="lang-label">PHP</span>
+        </div>
+        <span class="stars">★ 5</span>
+      </div>
+    </div>
+
+  </div>
+  <div style="margin-top:2rem;text-align:center">
+    <a href="https://github.com/mansour-niang" class="btn btn-ghost" target="_blank">
+      Voir tous mes repos sur GitHub →
+    </a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">contact</div>
+  <h2>Travaillons ensemble</h2>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p>
+        Étudiant en L2 SI & Télécom à l'<strong style="color:var(--text)">ESP de Dakar</strong>, certifié
+        <strong style="color:var(--accent)">HCIA-Datacom (Huawei)</strong>, je suis ouvert à des stages,
+        projets collaboratifs ou missions freelance. Parlons-en !
+      </p>
+      <div class="social-links">
+        <a href="https://github.com/mansour-niang" class="social-link" target="_blank">
+          <span class="social-link-icon">
+            <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55v-1.93c-3.19.69-3.86-1.54-3.86-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.27-5.23-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.15 1.17a10.96 10.96 0 012.87-.39c.97 0 1.95.13 2.87.39 2.19-1.48 3.15-1.17 3.15-1.17.62 1.57.23 2.73.11 3.02.74.8 1.18 1.82 1.18 3.07 0 4.4-2.68 5.37-5.24 5.65.41.35.78 1.05.78 2.12v3.14c0 .3.2.66.79.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
+          </span>
+          <div class="social-link-info">
+            <div class="social-link-name">GitHub</div>
+            <div class="social-link-handle">@mansour-niang</div>
+          </div>
+          <span class="social-link-arrow">→</span>
+        </a>
+        <a href="https://linkedin.com/in/mouhamadou-mansour-niang" class="social-link" target="_blank">
+          <span class="social-link-icon">💼</span>
+          <div class="social-link-info">
+            <div class="social-link-name">LinkedIn</div>
+            <div class="social-link-handle">Mouhamadou Mansour Niang</div>
+          </div>
+          <span class="social-link-arrow">→</span>
+        </a>
+        <a href="mailto:mouhamadou.niang@esp.sn" class="social-link">
+          <span class="social-link-icon">📧</span>
+          <div class="social-link-info">
+            <div class="social-link-name">Email</div>
+            <div class="social-link-handle">mouhamadou.niang@esp.sn</div>
+          </div>
+          <span class="social-link-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <form class="contact-form" onsubmit="handleSubmit(event)">
+      <div class="form-group">
+        <label>Nom</label>
+        <input type="text" placeholder="Jean Dupont" required />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="jean@example.com" required />
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Bonjour, je voudrais..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="align-self:flex-start">
+        Envoyer le message →
+      </button>
+      <div id="form-success" style="display:none;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent)">
+        ✓ Message envoyé avec succès !
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-text">© 2025 — Conçu & développé avec <span>❤</span> par <span>Mouhamadou Mansour Niang</span></div>
+  <div class="footer-text">ESP Dakar · L2 SI & Télécom · HCIA-Datacom</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Skill bar animation on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+          bar.style.width = bar.style.width;
+        });
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.skills-grid').forEach(el => observer.observe(el));
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('form-success').style.display = 'block';
+    e.target.reset();
+    setTimeout(() => {
+      document.getElementById('form-success').style.display = 'none';
+    }, 4000);
+  }
+
+  // Scroll animation
+  const cards = document.querySelectorAll('.skill-card, .project-card, .social-link');
+  const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = entry.target.classList.contains('social-link')
+            ? 'translateX(0)' : 'translateY(0)';
+        }, i * 80);
+        cardObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  cards.forEach(card => {
+    card.sty
